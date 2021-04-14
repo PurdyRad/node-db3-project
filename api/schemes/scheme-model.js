@@ -1,7 +1,18 @@
-function find() { // EXERCISE A
+const db = require('../../data/db-config');
+
+async function find() { 
+  const allRows = await db('schemes as sc')
+  .select('sc.scheme_id', 'sc.scheme_name')
+  .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+  .groupBy('sc.scheme_id')
+  .count('st.scheme_id as number_of_steps')
+
+  return allRows
+  // EXERCISE A
   /*
     1A- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`.
     What happens if we change from a LEFT join to an INNER join?
+    The "Have fun!" entry is lost if we go to an inner join as it does not have correlating data on steps
 
       SELECT
           sc.*,

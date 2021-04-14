@@ -6,8 +6,13 @@
     "message": "scheme with scheme_id <actual id> not found"
   }
 */
-const checkSchemeId = (req, res, next) => {
+const checkSchemeId = async (req, res, next) => {
+  try {
+  const {id} = req.body;
 
+  } catch (err) {
+    next(err)
+  }
 }
 
 /*

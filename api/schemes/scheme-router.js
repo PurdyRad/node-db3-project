@@ -26,6 +26,7 @@ const router = express.Router()
 router.get('/', (req, res, next) => {
   Schemes.find()
     .then(schemes => {
+      console.log('schemes', schemes)
       res.json(schemes)
     })
     .catch(next)
