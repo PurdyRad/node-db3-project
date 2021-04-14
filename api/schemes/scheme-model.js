@@ -2,10 +2,10 @@ const db = require('../../data/db-config');
 
 async function find() { 
   const allRows = await db('schemes as sc')
-  .select('sc.scheme_id', 'sc.scheme_name')
-  .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
-  .groupBy('sc.scheme_id')
-  .count('st.scheme_id as number_of_steps')
+    .select('sc.scheme_id', 'sc.scheme_name')
+    .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+    .groupBy('sc.scheme_id')
+    .count('st.scheme_id as number_of_steps')
 
   return allRows
   // EXERCISE A
@@ -28,7 +28,14 @@ async function find() {
   */
 }
 
-function findById(scheme_id) { // EXERCISE B
+async function findById(scheme_id) { // EXERCISE B
+  const row = await db('schemes as sc')
+    .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+    .select('sc.scheme_name', 'st.*')
+    .where('sc.scheme_id', scheme_id)
+    .orderBy('st.step_number', 'asc')
+    const result = {row}
+    return result
   /*
     1B- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`:
 
