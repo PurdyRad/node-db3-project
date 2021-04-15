@@ -29,13 +29,27 @@ async function find() {
 }
 
 async function findById(scheme_id) { // EXERCISE B
+  
   const row = await db('schemes as sc')
     .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
     .select('sc.scheme_name', 'st.*')
     .where('sc.scheme_id', scheme_id)
     .orderBy('st.step_number', 'asc')
-    const result = {row}
+    
+    const result = {}
+    row.forEach(thing => {
+      if (!result.scheme_id && !result.scheme_name) {
+        result.scheme_id = thing.scheme_id
+        result.scheme_name = thing.scheme_name 
+        result.steps = []
+      } if (thing.step_id) {
+        result.steps.push({'step_id': thing.step_id, 'step_number': thing.step_number, 'instructions': thing.instructions})
+      }
+    });
     return result
+
+    
+
   /*
     1B- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`:
 
@@ -127,6 +141,7 @@ function findSteps(scheme_id) { // EXERCISE C
 }
 
 function add(scheme) { // EXERCISE D
+
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
